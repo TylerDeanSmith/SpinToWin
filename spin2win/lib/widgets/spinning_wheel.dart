@@ -58,7 +58,8 @@ class _SpinningWheelState extends State<SpinningWheel>
     final baseRotations = 3 + random.nextDouble() * 2; // 3-5 full rotations
     // The pointer is at the top, so we need to adjust for which segment should be at the top
     final segmentAngle = 2 * pi / widget.options.length;
-    final targetAngle = baseRotations * 2 * pi - (_resultIndex! * segmentAngle);
+    // Point to the center of the segment (add 0.5 to target the middle of the segment)
+    final targetAngle = baseRotations * 2 * pi - ((_resultIndex! + 0.5) * segmentAngle);
     
     _rotationAnimation = Tween<double>(
       begin: 0.0,
