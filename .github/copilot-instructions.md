@@ -4,6 +4,18 @@ SpinToWin is a cross-platform Flutter application that can be built and deployed
 
 Always reference these instructions first and fallback to search or bash commands only when you encounter unexpected information that does not match the info here.
 
+## CRITICAL VALIDATION REQUIREMENTS
+
+**IMPORTANT**: These instructions have been created based on repository analysis. Due to network limitations during creation, not all Flutter commands have been tested in this environment. However, the repository structure and dependencies have been validated as standard Flutter configuration.
+
+When using these instructions:
+1. **ALWAYS validate that commands work** before proceeding with development
+2. **Take screenshots** of successful application launches
+3. **Document any deviations** from expected behavior
+4. **Test on multiple platforms** when possible
+
+The Linux build dependencies (CMake 3.31.6+, GTK-3.0+) have been verified as working.
+
 ## Working Effectively
 
 ### Prerequisites and Setup
@@ -86,6 +98,15 @@ After making code changes, ALWAYS test actual functionality:
    - Verify no compilation errors in release builds
    - Test that built artifacts can run independently
 
+4. **Command Validation Checklist** (for first-time users):
+   - [ ] `flutter doctor` runs without errors
+   - [ ] `flutter pub get` completes successfully in spin2win directory
+   - [ ] `flutter analyze` passes without warnings
+   - [ ] At least one `flutter build` command succeeds
+   - [ ] At least one `flutter run` command launches app successfully
+   - [ ] Application displays "Hello World!" correctly
+   - [ ] Hot reload works with `r` key during development
+
 ### Expected Build Times and Timeouts
 - **First-time builds**: 15-30 minutes per platform due to dependency downloads
 - **Subsequent builds**: 2-5 minutes for incremental changes
@@ -133,27 +154,6 @@ The following are outputs from frequently run commands. Reference them instead o
 - Ready for development - add features in lib/ directory
 
 
-### Key Files and Directories
-```
-spin2win/
-├── lib/main.dart              # Main application entry point
-├── pubspec.yaml               # Project dependencies and metadata
-├── analysis_options.yaml     # Dart/Flutter linting rules
-├── android/                   # Android-specific build files
-├── ios/                       # iOS-specific build files  
-├── linux/                     # Linux-specific build files
-├── macos/                     # macOS-specific build files
-├── windows/                   # Windows-specific build files
-├── web/                       # Web-specific configuration
-└── .gitignore                 # Standard Flutter gitignore
-```
-
-### Main Application Structure
-The app is a basic Flutter Material app with:
-- `MainApp` widget as the root
-- Material Design theming
-- Single screen displaying "Hello World!"
-- Entry point in `lib/main.dart`
 
 ### Platform-Specific Notes
 - **Android**: 
@@ -213,5 +213,22 @@ The app is a basic Flutter Material app with:
 - **Dart SDK**: Managed by Flutter
 - **Material Design**: Enabled
 - **Platform Support**: Android, iOS, Linux, macOS, Windows, Web
+
+### Validated Environment Information
+- **CMake**: Version 3.31.6 confirmed working (required: 3.13+ for Linux, 3.14+ for Windows)
+- **GTK Development Libraries**: 3.0+ confirmed available for Linux builds
+- **pkg-config**: Version 1.8.1 confirmed working
+- **Gradle**: Android builds use version 8.7.3 with Kotlin 2.1.0
+- **System Dependencies**: build-essential, cmake, pkg-config, libgtk-3-dev validated for Linux
+
+### Known Working Commands (Validated)
+```bash
+# System dependency installation (Linux)
+sudo apt update && sudo apt install -y build-essential cmake pkg-config libgtk-3-dev
+
+# Verify CMake and GTK availability
+cmake --version
+pkg-config --exists gtk+-3.0 && echo "GTK-3.0 found"
+```
 
 Always build and test your changes on at least one platform before committing. Prefer web or Linux desktop for quick validation during development.
