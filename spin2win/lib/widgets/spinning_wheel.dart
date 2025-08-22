@@ -56,7 +56,9 @@ class _SpinningWheelState extends State<SpinningWheel>
     
     // Calculate target rotation (multiple full rotations + result position)
     final baseRotations = 3 + random.nextDouble() * 2; // 3-5 full rotations
-    final targetAngle = baseRotations * 2 * pi + (2 * pi * _resultIndex! / widget.options.length);
+    // The pointer is at the top, so we need to adjust for which segment should be at the top
+    final segmentAngle = 2 * pi / widget.options.length;
+    final targetAngle = baseRotations * 2 * pi - (_resultIndex! * segmentAngle);
     
     _rotationAnimation = Tween<double>(
       begin: 0.0,
@@ -101,15 +103,15 @@ class _SpinningWheelState extends State<SpinningWheel>
           ),
           // Pointer
           Positioned(
-            top: 0,
+            top: 10,
             child: Container(
               width: 0,
               height: 0,
               decoration: const BoxDecoration(
                 border: Border(
-                  left: BorderSide(width: 15, color: Colors.transparent),
-                  right: BorderSide(width: 15, color: Colors.transparent),
-                  bottom: BorderSide(width: 30, color: Colors.red),
+                  left: BorderSide(width: 20, color: Colors.transparent),
+                  right: BorderSide(width: 20, color: Colors.transparent),
+                  bottom: BorderSide(width: 40, color: Colors.red),
                 ),
               ),
             ),
