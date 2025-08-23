@@ -68,7 +68,7 @@ class _SpinningWheelState extends State<SpinningWheel>
     // - Rotation needed: -((_resultIndex + 0.5) * segmentAngle)
     // - Total rotation: baseRotations * 2π - ((_resultIndex + 0.5) * segmentAngle)
     
-    final targetAngle = baseRotations * 2 * pi - ((_resultIndex! + 0.5) * segmentAngle);
+    final targetAngle = baseRotations * 2 * pi + ((_resultIndex! + 0.5) * segmentAngle);
     
     _rotationAnimation = Tween<double>(
       begin: 0.0,
