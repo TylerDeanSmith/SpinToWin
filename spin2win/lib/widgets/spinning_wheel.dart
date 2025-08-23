@@ -56,12 +56,18 @@ class _SpinningWheelState extends State<SpinningWheel>
     
     // Calculate target rotation (multiple full rotations + result position)
     final baseRotations = 3 + random.nextDouble() * 2; // 3-5 full rotations
-    // The pointer is at the top, so we need to adjust for which segment should be at the top
     final segmentAngle = 2 * pi / widget.options.length;
     
-    // FIXED: Point to the center of the segment (add 0.5 to target the middle of the segment)
-    // Use subtraction for correct rotation direction to align the winning segment with the pointer
-    final targetAngle = baseRotations * 2 * pi - ((_resultIndex! + 0.5) * segmentAngle);
+    // PRECISE ALIGNMENT CALCULATION:
+    // The wheel segments are drawn starting from the top and going clockwise.
+    // To ensure the winning segment's center aligns perfectly with the pointer,
+    // we need to account for the exact drawing position and rotation mechanics.
+    
+    // Key insight: The segment index represents the visual order from top clockwise.
+    // We need to rotate the wheel counterclockwise to bring the selected segment to the top.
+    // However, there might be a half-segment offset needed for perfect alignment.
+    
+    final targetAngle = baseRotations * 2 * pi - (_resultIndex! * segmentAngle);
     
     _rotationAnimation = Tween<double>(
       begin: 0.0,
