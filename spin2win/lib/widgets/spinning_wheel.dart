@@ -52,7 +52,7 @@ class _SpinningWheelState extends State<SpinningWheel>
   void _startSpinning() {
     // Generate random result
     final random = Random();
-    _resultIndex = random.nextInt(widget.options.length);
+    _resultIndex = 0; // DEBUG: Always select Pizza (index 0) to test alignment
     
     // Calculate target rotation (multiple full rotations + result position)
     final baseRotations = 3 + random.nextDouble() * 2; // 3-5 full rotations
