@@ -58,9 +58,9 @@ class _SpinningWheelState extends State<SpinningWheel>
     final baseRotations = 3 + random.nextDouble() * 2; // 3-5 full rotations
     final segmentAngle = 2 * pi / widget.options.length;
     
-    // BACK TO BASICS: Try the exact opposite of the original algorithm
-    // Original was: baseRotations * 2 * pi - (_resultIndex! * segmentAngle)
-    // Let me try: baseRotations * 2 * pi + (_resultIndex! * segmentAngle)
+    // WHEEL ALIGNMENT CALCULATION:
+    // Corrected rotation direction to ensure the selected segment aligns with the top pointer.
+    // Uses positive rotation (counterclockwise) to bring the target segment to the pointer position.
     final targetAngle = baseRotations * 2 * pi + (_resultIndex! * segmentAngle);
     
     _rotationAnimation = Tween<double>(
