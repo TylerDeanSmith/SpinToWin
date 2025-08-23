@@ -52,23 +52,16 @@ class _SpinningWheelState extends State<SpinningWheel>
   void _startSpinning() {
     // Generate random result
     final random = Random();
-    _resultIndex = 0; // DEBUG: Always select Pizza (index 0) to test alignment
+    _resultIndex = random.nextInt(widget.options.length);
     
     // Calculate target rotation (multiple full rotations + result position)
     final baseRotations = 3 + random.nextDouble() * 2; // 3-5 full rotations
     final segmentAngle = 2 * pi / widget.options.length;
     
-    // ROBUST WHEEL ALIGNMENT CALCULATION:
-    // Target the center of the winning segment for most intuitive user experience.
-    // The pointer should point to the middle of the winning segment, not its edge.
-    
-    // Mathematical foundation:
-    // - Segments are drawn with centers at: (i + 0.5) * segmentAngle - π/2
-    // - Pointer is positioned at -π/2 (top of wheel)
-    // - Rotation needed: -((_resultIndex + 0.5) * segmentAngle)
-    // - Total rotation: baseRotations * 2π - ((_resultIndex + 0.5) * segmentAngle)
-    
-    final targetAngle = baseRotations * 2 * pi + (_resultIndex! * segmentAngle);
+    // TESTING: What if the issue is with segment ordering or direction?
+    // Try using the complement index to see if there's a reversal issue
+    final adjustedIndex = (widget.options.length - 1 - _resultIndex!);
+    final targetAngle = baseRotations * 2 * pi - ((adjustedIndex + 0.5) * segmentAngle);
     
     _rotationAnimation = Tween<double>(
       begin: 0.0,
