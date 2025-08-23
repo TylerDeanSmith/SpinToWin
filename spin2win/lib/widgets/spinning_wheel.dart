@@ -58,14 +58,10 @@ class _SpinningWheelState extends State<SpinningWheel>
     final baseRotations = 3 + random.nextDouble() * 2; // 3-5 full rotations
     final segmentAngle = 2 * pi / widget.options.length;
     
-    // PATTERN-BASED FIX:
-    // User reported: Pizza=Sushi (0->2) and Burger=Pasta (1->4)  
-    // Pattern: 0->2 (+2), 1->4 (+3)
-    // This suggests segments are offset. Let me try reversing: 2->0, 4->1
-    // If Pizza(0) shows as Sushi(2), then to show Pizza I need index 2
-    // Let me try: if I want to show index i, use index (i+2) % length
-    final correctedIndex = (_resultIndex! + 2) % widget.options.length;
-    final targetAngle = baseRotations * 2 * pi - ((correctedIndex + 0.5) * segmentAngle);
+    // BACK TO BASICS: Try the exact opposite of the original algorithm
+    // Original was: baseRotations * 2 * pi - (_resultIndex! * segmentAngle)
+    // Let me try: baseRotations * 2 * pi + (_resultIndex! * segmentAngle)
+    final targetAngle = baseRotations * 2 * pi + (_resultIndex! * segmentAngle);
     
     _rotationAnimation = Tween<double>(
       begin: 0.0,
