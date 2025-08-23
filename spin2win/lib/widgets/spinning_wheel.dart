@@ -58,16 +58,17 @@ class _SpinningWheelState extends State<SpinningWheel>
     final baseRotations = 3 + random.nextDouble() * 2; // 3-5 full rotations
     final segmentAngle = 2 * pi / widget.options.length;
     
-    // PRECISE ALIGNMENT CALCULATION:
-    // The wheel segments are drawn starting from the top and going clockwise.
-    // To ensure the winning segment's center aligns perfectly with the pointer,
-    // we need to account for the exact drawing position and rotation mechanics.
+    // ROBUST WHEEL ALIGNMENT CALCULATION:
+    // Target the center of the winning segment for most intuitive user experience.
+    // The pointer should point to the middle of the winning segment, not its edge.
     
-    // Key insight: The segment index represents the visual order from top clockwise.
-    // We need to rotate the wheel counterclockwise to bring the selected segment to the top.
-    // However, there might be a half-segment offset needed for perfect alignment.
+    // Mathematical foundation:
+    // - Segments are drawn with centers at: (i + 0.5) * segmentAngle - π/2
+    // - Pointer is positioned at -π/2 (top of wheel)
+    // - Rotation needed: -((_resultIndex + 0.5) * segmentAngle)
+    // - Total rotation: baseRotations * 2π - ((_resultIndex + 0.5) * segmentAngle)
     
-    final targetAngle = baseRotations * 2 * pi - (_resultIndex! * segmentAngle);
+    final targetAngle = baseRotations * 2 * pi - ((_resultIndex! + 0.5) * segmentAngle);
     
     _rotationAnimation = Tween<double>(
       begin: 0.0,
