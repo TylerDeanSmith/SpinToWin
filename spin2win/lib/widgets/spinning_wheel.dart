@@ -93,13 +93,6 @@ class _SpinningWheelState extends State<SpinningWheel>
       resultIndex += widget.options.length;
     }
     
-    // Debug output
-    print('DEBUG: totalRotation=${(totalRotation * 180 / pi).toStringAsFixed(1)}°, '
-          'normalized=${(normalizedRotation * 180 / pi).toStringAsFixed(1)}°, '
-          'segmentsMoved=${segmentsMoved.toStringAsFixed(2)}, '
-          'resultIndex=$resultIndex, '
-          'option=${widget.options[resultIndex].label}');
-    
     return resultIndex;
   }
 
