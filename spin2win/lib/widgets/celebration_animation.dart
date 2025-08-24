@@ -206,25 +206,6 @@ class _CelebrationAnimationState extends State<CelebrationAnimation>
                             const SizedBox(height: 12),
                             Container(
                               padding: const EdgeInsets.symmetric(
-                                horizontal: 16,
-                                vertical: 4,
-                              ),
-                              decoration: BoxDecoration(
-                                color: Colors.white.withOpacity(0.9),
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                              child: const Text(
-                                '🎉 WINNER! 🎉',
-                                style: TextStyle(
-                                  fontSize: 28,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.orange,
-                                ),
-                              ),
-                            ),
-                            const SizedBox(height: 12),
-                            Container(
-                              padding: const EdgeInsets.symmetric(
                                 horizontal: 20,
                                 vertical: 8,
                               ),
@@ -246,14 +227,6 @@ class _CelebrationAnimationState extends State<CelebrationAnimation>
                               ),
                             ),
                             const SizedBox(height: 8),
-                            const Text(
-                              '✨ Congratulations! ✨',
-                              style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w600,
-                                color: Colors.white,
-                              ),
-                            ),
                           ],
                         ),
                       ),

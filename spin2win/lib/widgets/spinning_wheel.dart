@@ -85,7 +85,7 @@ class _SpinningWheelState extends State<SpinningWheel>
 
   void _playCelebrationSound() async {
     try {
-      await _audioPlayer.play(AssetSource('sounds/celebration.mp3'));
+      //await _audioPlayer.play(AssetSource('sounds/celebration.mp3'));
     } catch (e) {
       // Silently handle audio errors - sound is optional
       debugPrint('Celebration sound error: $e');
@@ -165,7 +165,7 @@ class _SpinningWheelState extends State<SpinningWheel>
               return Transform.rotate(
                 angle: _rotationAnimation.value,
                 child: CustomPaint(
-                  size: const Size(300, 300),
+                  size: const Size(450, 450),
                   painter: WheelPainter(options: widget.options),
                 ),
               );
