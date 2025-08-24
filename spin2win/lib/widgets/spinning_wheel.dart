@@ -165,7 +165,7 @@ class _SpinningWheelState extends State<SpinningWheel>
               return Transform.rotate(
                 angle: _rotationAnimation.value,
                 child: CustomPaint(
-                  size: const Size(450, 450),
+                  size: const Size(350, 350),
                   painter: WheelPainter(options: widget.options),
                 ),
               );
