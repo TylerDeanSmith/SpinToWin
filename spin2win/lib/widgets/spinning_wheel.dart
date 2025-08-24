@@ -50,18 +50,12 @@ class _SpinningWheelState extends State<SpinningWheel>
   }
 
   void _startSpinning() {
-    // Generate random result
     final random = Random();
-    _resultIndex = random.nextInt(widget.options.length);
     
-    // Calculate target rotation (multiple full rotations + result position)
+    // Generate truly random target rotation (multiple full rotations + random final position)
     final baseRotations = 3 + random.nextDouble() * 2; // 3-5 full rotations
-    final segmentAngle = 2 * pi / widget.options.length;
-    
-    // WHEEL ALIGNMENT CALCULATION:
-    // Corrected rotation direction to ensure the selected segment aligns with the top pointer.
-    // Uses positive rotation (counterclockwise) to bring the target segment to the pointer position.
-    final targetAngle = baseRotations * 2 * pi + (_resultIndex! * segmentAngle);
+    final finalAngle = random.nextDouble() * 2 * pi; // Random final position
+    final targetAngle = baseRotations * 2 * pi + finalAngle;
     
     _rotationAnimation = Tween<double>(
       begin: 0.0,
@@ -73,10 +67,40 @@ class _SpinningWheelState extends State<SpinningWheel>
 
     _rotationController.reset();
     _rotationController.forward().then((_) {
+      // Calculate which segment is under the pointer after the wheel stops
+      _resultIndex = _calculateResultFromAngle(targetAngle);
       if (_resultIndex != null) {
         widget.onResult(widget.options[_resultIndex!]);
       }
     });
+  }
+
+  int _calculateResultFromAngle(double totalRotation) {
+    final segmentAngle = 2 * pi / widget.options.length;
+    
+    // Normalize rotation to [0, 2π)
+    final normalizedRotation = totalRotation % (2 * pi);
+    
+    // How many segments did we rotate?
+    final segmentsMoved = normalizedRotation / segmentAngle;
+    
+    // The segment under the pointer is the original segment 0 minus the segments moved
+    // (since counterclockwise rotation moves us backwards through the segment indices when viewed from the pointer's perspective)
+    int resultIndex = (-segmentsMoved.round()) % widget.options.length;
+    
+    // Ensure positive index
+    if (resultIndex < 0) {
+      resultIndex += widget.options.length;
+    }
+    
+    // Debug output
+    print('DEBUG: totalRotation=${(totalRotation * 180 / pi).toStringAsFixed(1)}°, '
+          'normalized=${(normalizedRotation * 180 / pi).toStringAsFixed(1)}°, '
+          'segmentsMoved=${segmentsMoved.toStringAsFixed(2)}, '
+          'resultIndex=$resultIndex, '
+          'option=${widget.options[resultIndex].label}');
+    
+    return resultIndex;
   }
 
   @override
