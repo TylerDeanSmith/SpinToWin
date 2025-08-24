@@ -34,7 +34,7 @@ class _CelebrationAnimationState extends State<CelebrationAnimation>
     );
     
     _sparkleController = AnimationController(
-      duration: const Duration(seconds: 3),
+      duration: const Duration(seconds: 4), // Longer celebration!
       vsync: this,
     );
 
@@ -51,7 +51,7 @@ class _CelebrationAnimationState extends State<CelebrationAnimation>
       end: 0.0,
     ).animate(CurvedAnimation(
       parent: _controller,
-      curve: const Interval(0.7, 1.0, curve: Curves.easeOut),
+      curve: const Interval(0.8, 1.0, curve: Curves.easeOut), // Fade later
     ));
 
     _generateSparkles();
@@ -68,15 +68,40 @@ class _CelebrationAnimationState extends State<CelebrationAnimation>
   void _generateSparkles() {
     final random = Random();
     _sparkles.clear();
-    for (int i = 0; i < 50; i++) {
+    
+    // Generate many more sparkles for a grand celebration!
+    for (int i = 0; i < 200; i++) {
       _sparkles.add(Sparkle(
         x: random.nextDouble(),
         y: random.nextDouble(),
-        size: random.nextDouble() * 8 + 4,
-        delay: random.nextDouble() * 0.5,
-        duration: random.nextDouble() * 1.5 + 0.5,
+        size: random.nextDouble() * 12 + 3, // Larger size range
+        delay: random.nextDouble() * 0.8,
+        duration: random.nextDouble() * 2.0 + 0.5,
+        color: _getRandomStarColor(random),
+        type: random.nextBool() ? SparkleType.star : SparkleType.firework,
+        velocityX: (random.nextDouble() - 0.5) * 4, // For shooting effects
+        velocityY: (random.nextDouble() - 0.5) * 4,
       ));
     }
+  }
+  
+  Color _getRandomStarColor(Random random) {
+    final colors = [
+      Colors.gold,
+      Colors.yellow,
+      Colors.orange,
+      Colors.red,
+      Colors.pink,
+      Colors.purple,
+      Colors.blue,
+      Colors.cyan,
+      Colors.green,
+      Colors.lime,
+      Colors.white,
+      const Color(0xFFFFD700), // Gold
+      const Color(0xFFC0C0C0), // Silver
+    ];
+    return colors[random.nextInt(colors.length)];
   }
 
   void _startCelebration() {
@@ -130,44 +155,104 @@ class _CelebrationAnimationState extends State<CelebrationAnimation>
                       scale: _scaleAnimation.value,
                       child: Container(
                         padding: const EdgeInsets.symmetric(
-                          horizontal: 32,
-                          vertical: 16,
+                          horizontal: 40,
+                          vertical: 24,
                         ),
                         decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(16),
+                          gradient: const LinearGradient(
+                            colors: [Colors.orange, Colors.deepOrange],
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
+                          ),
+                          borderRadius: BorderRadius.circular(20),
                           boxShadow: [
                             BoxShadow(
-                              color: Colors.black.withOpacity(0.3),
-                              blurRadius: 10,
-                              offset: const Offset(0, 5),
+                              color: Colors.black.withOpacity(0.4),
+                              blurRadius: 20,
+                              offset: const Offset(0, 8),
+                            ),
+                            BoxShadow(
+                              color: Colors.orange.withOpacity(0.6),
+                              blurRadius: 15,
+                              offset: const Offset(0, 0),
                             ),
                           ],
                         ),
                         child: Column(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            const Icon(
-                              Icons.celebration,
-                              color: Colors.orange,
-                              size: 48,
+                            // Multiple celebration icons
+                            Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: const [
+                                Icon(
+                                  Icons.celebration,
+                                  color: Colors.white,
+                                  size: 32,
+                                ),
+                                SizedBox(width: 8),
+                                Icon(
+                                  Icons.star,
+                                  color: Colors.yellow,
+                                  size: 36,
+                                ),
+                                SizedBox(width: 8),
+                                Icon(
+                                  Icons.celebration,
+                                  color: Colors.white,
+                                  size: 32,
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 12),
+                            Container(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 16,
+                                vertical: 4,
+                              ),
+                              decoration: BoxDecoration(
+                                color: Colors.white.withOpacity(0.9),
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              child: const Text(
+                                '🎉 WINNER! 🎉',
+                                style: TextStyle(
+                                  fontSize: 28,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.orange,
+                                ),
+                              ),
+                            ),
+                            const SizedBox(height: 12),
+                            Container(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 20,
+                                vertical: 8,
+                              ),
+                              decoration: BoxDecoration(
+                                color: Colors.white.withOpacity(0.95),
+                                borderRadius: BorderRadius.circular(15),
+                                border: Border.all(
+                                  color: Colors.yellow,
+                                  width: 2,
+                                ),
+                              ),
+                              child: Text(
+                                widget.winningText,
+                                style: const TextStyle(
+                                  fontSize: 22,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.deepOrange,
+                                ),
+                              ),
                             ),
                             const SizedBox(height: 8),
                             const Text(
-                              'Winner!',
+                              '✨ Congratulations! ✨',
                               style: TextStyle(
-                                fontSize: 24,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.orange,
-                              ),
-                            ),
-                            const SizedBox(height: 4),
-                            Text(
-                              widget.winningText,
-                              style: const TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.w500,
-                                color: Colors.black87,
+                                fontSize: 16,
+                                fontWeight: FontWeight.w600,
+                                color: Colors.white,
                               ),
                             ),
                           ],
@@ -185,12 +270,18 @@ class _CelebrationAnimationState extends State<CelebrationAnimation>
   }
 }
 
+enum SparkleType { star, firework }
+
 class Sparkle {
   final double x;
   final double y;
   final double size;
   final double delay;
   final double duration;
+  final Color color;
+  final SparkleType type;
+  final double velocityX;
+  final double velocityY;
 
   Sparkle({
     required this.x,
@@ -198,6 +289,10 @@ class Sparkle {
     required this.size,
     required this.delay,
     required this.duration,
+    required this.color,
+    required this.type,
+    required this.velocityX,
+    required this.velocityY,
   });
 }
 
@@ -221,18 +316,56 @@ class SparklesPainter extends CustomPainter {
           ? sparkleProgress * 2
           : (1.0 - sparkleProgress) * 2;
 
-      final paint = Paint()
-        ..color = Colors.yellow.withOpacity(opacity)
-        ..style = PaintingStyle.fill;
+      // Calculate position with movement for shooting effects
+      final centerX = sparkle.x * size.width + sparkle.velocityX * sparkleProgress * 100;
+      final centerY = sparkle.y * size.height + sparkle.velocityY * sparkleProgress * 100;
+      
+      final center = Offset(centerX, centerY);
 
-      final center = Offset(
-        sparkle.x * size.width,
-        sparkle.y * size.height,
-      );
+      if (sparkle.type == SparkleType.star) {
+        final paint = Paint()
+          ..color = sparkle.color.withOpacity(opacity)
+          ..style = PaintingStyle.fill;
 
-      // Draw star shape
-      _drawStar(canvas, center, sparkle.size * sparkleProgress, paint);
+        // Draw star shape
+        _drawStar(canvas, center, sparkle.size * sparkleProgress, paint);
+      } else {
+        // Draw firework burst
+        _drawFirework(canvas, center, sparkle.size * sparkleProgress, sparkle.color.withOpacity(opacity));
+      }
     }
+  }
+
+  void _drawFirework(Canvas canvas, Offset center, double size, Color color) {
+    final paint = Paint()
+      ..color = color
+      ..style = PaintingStyle.fill;
+
+    // Draw multiple burst rays
+    for (int i = 0; i < 8; i++) {
+      final angle = (i * pi) / 4;
+      final startRadius = size * 0.2;
+      final endRadius = size;
+      
+      final startX = center.dx + startRadius * cos(angle);
+      final startY = center.dy + startRadius * sin(angle);
+      final endX = center.dx + endRadius * cos(angle);
+      final endY = center.dy + endRadius * sin(angle);
+      
+      final strokePaint = Paint()
+        ..color = color
+        ..style = PaintingStyle.stroke
+        ..strokeWidth = 2
+        ..strokeCap = StrokeCap.round;
+      
+      canvas.drawLine(Offset(startX, startY), Offset(endX, endY), strokePaint);
+      
+      // Add small circles at the end of each ray
+      canvas.drawCircle(Offset(endX, endY), 2, paint);
+    }
+    
+    // Draw center burst
+    canvas.drawCircle(center, size * 0.3, paint);
   }
 
   void _drawStar(Canvas canvas, Offset center, double size, Paint paint) {
