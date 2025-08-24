@@ -87,7 +87,6 @@ class _CelebrationAnimationState extends State<CelebrationAnimation>
   
   Color _getRandomStarColor(Random random) {
     final colors = [
-      Colors.gold,
       Colors.yellow,
       Colors.orange,
       Colors.red,

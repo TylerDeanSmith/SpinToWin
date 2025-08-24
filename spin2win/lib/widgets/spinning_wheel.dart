@@ -86,10 +86,10 @@ class _SpinningWheelState extends State<SpinningWheel>
     
     // The segment under the pointer is the original segment 0 minus the segments moved
     // (since counterclockwise rotation moves us backwards through the segment indices when viewed from the pointer's perspective)
-    int resultIndex = (-segmentsMoved.round()) % widget.options.length;
-    
+    int resultIndex = (-segmentsMoved.ceil()) % widget.options.length;
+
     // Ensure positive index
-    if (resultIndex < 0) {
+     if (resultIndex < 0) {
       resultIndex += widget.options.length;
     }
     
