@@ -43,3 +43,8 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
+
+# Sound assets (placeholder files - replace with real audio)
+assets/sounds/*.mp3
+assets/sounds/*.wav
+!assets/sounds/README.md
